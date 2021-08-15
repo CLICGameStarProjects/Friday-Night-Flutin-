@@ -21,11 +21,12 @@ listening = False
 active = True
 input = keyboard.Controller()
 
-#Keys
+#control keys
 TOGGLE = keyboard.Key.shift
 STOP = keyboard.Key.esc
 
-#The order of the keys are from left to right in FNF.
+# The order of the keys are from left to right in FNF. Note that those are
+#lists in order to be able to press several keys at once if needed
 P1LEFT = ['left']
 P1DOWN = ['down']
 P1UP = ['up']
