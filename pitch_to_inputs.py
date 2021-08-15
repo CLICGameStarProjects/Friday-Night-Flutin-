@@ -6,10 +6,10 @@ import pydirectinput
 from pynput import keyboard
 import time
 
-# General settings
-SAMPLE_FREQ = 44100 # sample frequency in Hz
-WINDOW_SIZE = 44100 # window size of the DFT in samples
-WINDOW_STEP = 4000 # step size of window
+# General settings - to fine-tune
+SAMPLE_FREQ = 48000 # sample frequency in Hz
+WINDOW_SIZE = 15000 # window size of the DFT in samples
+WINDOW_STEP = 5000 # step size of window
 WINDOW_T_LEN = WINDOW_SIZE / SAMPLE_FREQ # length of the window in seconds
 SAMPLE_T_LENGTH = 1 / SAMPLE_FREQ # length between two samples in seconds
 windowSamples = [0 for _ in range(WINDOW_SIZE)]
@@ -52,12 +52,12 @@ players = {P1UPNOTE:P1UP, P1LEFTNOTE:P1LEFT, P1RIGHTNOTE:P1RIGHT, P1DOWNNOTE:P1D
 
 def on_press(key):
     global listening
-    #Toggle whether input are sent or not by pressing shift
+    #Toggle whether input are sent or not
     if key == TOGGLE:
         listening = not listening
         print("Listening : ", listening)
 
-    #Emergency stop by pressing ESC
+    #Emergency stop
     if key == STOP:
         # Stop listener
         global active
@@ -77,13 +77,14 @@ ALL_NOTES = ["A","A#","B","C","C#","D","D#","E","F","F#","G","G#"]
 def find_closest_note(pitch):
   i = int( np.round( np.log2( pitch/CONCERT_PITCH )*12 ) )
   corr = 0
+  #Shady correction from original
   if i < -2 and i > -10 or i < -14:
     corr = 1
   closestNote = ALL_NOTES[i%12] + str(4 + corr + np.sign(i) * int((9+abs(i))/12) )
   closestPitch = CONCERT_PITCH*2**(i/12)
   return closestNote, closestPitch
 
-# The sounddecive callback function
+# The sounddevice callback function
 # Provides us with new data once WINDOW_STEP samples have been fetched
 def callback(indata, frames, time, status):
   global windowSamples
@@ -124,14 +125,14 @@ try:
     samplerate=SAMPLE_FREQ):
     print("Listening : ", listening)
     current_key = ''
-    start = time.time()
     while active:
-        if time.time() - start > 0.2 and listening and not next_key == current_key:
+        # Pressing every key once. This means we can't play the same note several
+        # times in a row. TODO : maybe find a way to do this ?
+        if listening and not next_key == current_key:
             for key in next_key:
                 pydirectinput.keyDown(key)
             for key in next_key:
                 pydirectinput.keyUp(key)
-            start = time.time()
             current_key = next_key
 except Exception as e:
     print(str(e))
