@@ -38,15 +38,15 @@ P2UP = ['w']
 P2RIGHT = ['d']
 
 #Notes
-P1LEFTNOTE = 'E4'
-P1DOWNNOTE = 'F4'
-P1UPNOTE = 'G4'
-P1RIGHTNOTE = 'A4'
+P1LEFTNOTE = 'F5'
+P1DOWNNOTE = 'E5'
+P1UPNOTE = 'D5'
+P1RIGHTNOTE = 'C5'
 
-P2LEFTNOTE = 'E5'
-P2DOWNNOTE = 'F5'
-P2UPNOTE = 'G5'
-P2RIGHTNOTE = 'A5'
+P2LEFTNOTE = 'C#5'
+P2DOWNNOTE = 'B5'
+P2UPNOTE = 'A5'
+P2RIGHTNOTE = 'G5'
 
 players = {P1UPNOTE:P1UP, P1LEFTNOTE:P1LEFT, P1RIGHTNOTE:P1RIGHT, P1DOWNNOTE:P1DOWN,
            P2UPNOTE:P2UP, P2LEFTNOTE:P2LEFT, P2RIGHTNOTE:P2RIGHT, P2DOWNNOTE:P2DOWN}
@@ -132,7 +132,6 @@ try:
         if listening and not next_key == current_key:
             for key in next_key:
                 pydirectinput.keyDown(key)
-            for key in next_key:
                 pydirectinput.keyUp(key)
             current_key = next_key
 except Exception as e:
